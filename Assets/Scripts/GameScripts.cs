@@ -5,10 +5,11 @@ using UnityEngine;
 public class GameScripts : MonoBehaviour
 {
 
-    public Transform _respawnPosition;
+    [HideInInspector] public Transform _respawnPosition;
     public Transform _playerObj;
     public CharacterController _characterController;
     public OxygenTracker _oxygenTracker;
+    public CamFollower camScriptRef;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -24,6 +25,31 @@ public class GameScripts : MonoBehaviour
             Respawn();
         }
 
+        if (other.gameObject.tag == "GasBox")
+        {
+            _oxygenTracker.reductionStage = 2;
+        }
+
+        if (other.gameObject.tag == "CameraMover")
+        {
+            camScriptRef.midPos = other.transform.position;
+            camScriptRef.isInsideCameraShifter = true;
+        }
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "GasBox")
+        {
+            _oxygenTracker.reductionStage = 1;
+        }
+
+        if (other.gameObject.tag == "CameraMover")
+        {
+            camScriptRef.isInsideCameraShifter = false;
+        }
+
     }
 
     private void Respawn()
@@ -34,6 +60,8 @@ public class GameScripts : MonoBehaviour
         _characterController.enabled = true;
         _oxygenTracker.DecrementOxygen(Random.Range(10, 25));
     }
+
+    
 
     // Start is called before the first frame update
     void Start()

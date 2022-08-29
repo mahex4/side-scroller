@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - CinemachineTarget
+  - KillTrigger
+  - RespawnPoints
+  - GasBox
+  - CameraMover
   layers:
   - Default
   - TransparentFX
